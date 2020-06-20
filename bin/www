@@ -4,10 +4,9 @@
  * Module dependencies.
  */
 
-const fs = require('fs');
-const path = require('path');
 var app = require('../app');
 var debug = require('debug')('wss:server');
+var http = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -20,17 +19,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
- const http = require('http');
- http.createServer(app).listen(80);
- http.globalAgent.maxSockets = Infinity; // https://stackabuse.com/6-easy-ways-to-speed-up-express/
-
-
-// https
-const https = require('https');
-const server = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, './private.key')),
-    cert: fs.readFileSync(path.join(__dirname, './certificate.crt'))
-}, app);
+var server = http.createServer(app);
 
 const TRTC = require('./TQRTC/tqrtc.js').listen(server);
 
